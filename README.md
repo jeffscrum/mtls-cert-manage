@@ -1,26 +1,30 @@
 # Download easyrsa
 ```bash
 git clone https://github.com/OpenVPN/easy-rsa
-sudo ln -s /home/sonnyyu/easy-rsa/easyrsa3/easyrsa /usr/bin/easyrsa
+sudo ln -s /home/jeffscrum/easy-rsa/easyrsa3/easyrsa /usr/bin/easyrsa
 ```
 # Test it:
 ```bash
-easyrsa
+sudo easyrsa
 ```
-# Down load software:
+# Download software:
 ```bash
-git clone https://github.com/sonnyyu/mtls-cert-manage/
+git clone https://github.com/jeffscrum/mtls-cert-manage/
+```
+# Make scripts executable:
+```bash
+cd ~/mtls-cert-manage/pki
+chmod +x *.sh
 ```
 # init-pki & build ca
 ```bash
-cd ~/mtls-cert-manage/pki
-easyrsa init-pki
-easyrsa gen-dh
-easyrsa build-ca
+sudo easyrsa init-pki
+sudo easyrsa gen-dh
+sudo easyrsa build-ca
 ```
-# Update capassfile base on password use at build-ca
+# Update capassfile base on password used at build-ca
 ```bash
-nano capassfile
+vi capassfile
 ```
 # Build server pem for Splunk
 ```bash
@@ -30,22 +34,32 @@ nano capassfile
 ```bash
 ./haproxy.sh
 ```
-# Update p12passfile base on password use for p12 export
+# Update p12passfile base on password used for p12 export
 ```bash
-nano p12passfile
+vi p12passfile
 ```
 # Build client pem without private key password
 ```bash
-./client.sh
+./client.sh <client_name>
 ```
-# Update cppassfile base on password use for client private key
+# Update cppassfile base on password used for client private key
 ```bash
-nano cppassfile
+vi cppassfile
 ```
 # Build client pem with private key password
 ```bash
-./clientpw.sh
+./clientpw.sh <client_name>
 ```
+# Revoke client cert
+```bash
+./revoke.sh <client_name>
+```
+# Show cert & crl info
+```bash
+openssl x509 -noout -text -in ca.crt
+openssl crl -noout -text -in revoked.pem
+```
+
 Note: 
 - client1.p12 is client p12 file (client certificate)
 - ca.crt is CA Certificate 
