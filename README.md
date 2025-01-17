@@ -50,6 +50,10 @@ vi cppassfile
 ```bash
 ./clientpw.sh <client_name>
 ```
+**Note** If you are exportin certificate for MacOS, use legacy algorithms for p12 ([More info](https://stackoverflow.com/a/70656724))
+```
+openssl pkcs12 -export -legacy -out <export_name>.p12 -in <client_name>.crt -inkey <client_name>.key -certfile <ca_name>.crt
+```
 # Revoke client cert
 ```bash
 ./revoke.sh <client_name>
